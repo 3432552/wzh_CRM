@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+</head>
+<body>
+<h3>登陆成功,欢迎<p th:text="${session.user.userName}"></p>来到首页!</h3>
+<div class="home">
+    <ul class="list-group">
+        <li class="list-group-item"><span class="glyphicon glyphicon-home"></span>  工作台</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-tag"/> 动态</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-time"/> 审批</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-user"/> 客户公海</li>
+        <li class="list-group-item" data-toggle="modal" data-target="#myModal"><span
+                class="glyphicon glyphicon-play-circle"/> 市场活动
+        </li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-search"/> 线索(潜在客户)</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-user"/> 客户</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-earphone"/> 联系人</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-usd"/> 交易(商机)</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-phone-alt"/> 售后回访</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-stats"/> 统计图表</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"/> 市场活动统计图表</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"/> 线索统计图表</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"/> 客户和联系人统计图表</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"/> 交易统计图表</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-file"/> 报表</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-shopping-cart"/> 销售订单</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-send"/> 发货单</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-earphone"/> 跟起</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-leaf"/> 产品</li>
+        <li class="list-group-item"><span class="glyphicon glyphicon-usd"/> 报价</li>
+    </ul>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <h2>市场活动列表</h2>
+            <div class="form-group">
+                <label class="sr-only" for="name">名称</label>
+                <input type="text" class="form-control" id="name"
+                       placeholder="请输入名称">
+                <label class="sr-only" for="name">所有者</label>
+                <input type="text" class="form-control" id="name1"
+                       placeholder="请输入名称">
+                <label class="sr-only" for="name">开始日期</label>
+                <input type="text" class="form-control" id="name2"
+                       placeholder="请输入名称">
+                <label class="sr-only" for="name">结束日期</label>
+                <input type="text" class="form-control" id="name3"
+                       placeholder="请输入名称">
+            </div>
+
+            <div class="modal-body">
+                按下 ESC 按钮退出。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary">
+                    提交更改
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</body>
+</html>
