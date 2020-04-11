@@ -67,7 +67,9 @@ public class ActivityController {
     }
 
     @PostMapping("/updateAct")
-    public Result updateActMes(Activity activity) throws BusinessException {
+    public Result updateActMes(Activity activity,HttpServletRequest request) throws BusinessException {
+        User u=(User) request.getSession().getAttribute("user");
+        activity.setEditBy(u.getUserName());
         activityService.updateActInfo(activity);
         return Result.ok();
     }

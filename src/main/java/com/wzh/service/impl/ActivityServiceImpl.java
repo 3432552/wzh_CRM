@@ -56,6 +56,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    @Transactional
     public int updateActInfo(Activity activity) throws BusinessException {
         int re = activityMapper.updateActDao(activity);
         log.info("更新的对象 activity:" + activity + "\t" + "更新是否成功:" + re);

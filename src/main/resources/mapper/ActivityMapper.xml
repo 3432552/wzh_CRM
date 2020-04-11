@@ -46,7 +46,8 @@
       endDate=#{endDate},
       description=#{description},
       budgetcost=#{budgetcost},
-      actualcost=#{actualcost}
+      actualcost=#{actualcost},
+      editBy=#{editBy}
       where
       id=#{id}
     </update>
