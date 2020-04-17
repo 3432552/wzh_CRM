@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,17 @@ public class ActivityServiceImpl implements ActivityService {
             return re;
         } else {
             throw new BusinessException("新增失败");
+        }
+    }
+
+    @Override
+    public int delActById(String[] aid) throws BusinessException {
+        int delActId = activityMapper.delActById(aid);
+        if (delActId > 0) {
+            return delActId;
+        } else {
+            log.info("删除市场活动Id失败:" + delActId);
+            throw new BusinessException("删除失败!");
         }
     }
 }

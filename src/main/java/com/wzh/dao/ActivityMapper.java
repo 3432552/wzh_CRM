@@ -23,6 +23,7 @@ public interface ActivityMapper {
 
     int updateActDao(Activity activity);
 
-    int addAct(Activity activity) throws BusinessException;
+    int addAct(Activity activity);
 
+    int delActById(String[] ids);
 }

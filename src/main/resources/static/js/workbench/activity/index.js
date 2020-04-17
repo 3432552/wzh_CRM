@@ -6,7 +6,7 @@ $(function () {
         autoclose: true,
         todayBtn: true,
         pickerPosition: "bottom-left"
-    });
+    })
 
     $("#add-mod").click(function () {
         $.ajax({
@@ -27,6 +27,12 @@ $(function () {
     })
     //新增提交
     $("#saveMarketActivity").click(function () {
+        $("#cTime").bind(change, function () {
+            var startTime = $("#create-startTime").val();
+            var endTime = $("#create-endTime").val();
+            alert(startTime + "\t" + endTime);
+        })
+
         $.ajax({
             url: "/addAct",
             type: "post",
@@ -53,6 +59,10 @@ $(function () {
                 }
             }
         })
+    })
+    //全选
+    $("#topActId").click(function () {
+        $("input[name=actId]").prop("checked", this.checked);
     })
     //点击修改提交
     $("#edit-update").click(function () {
@@ -119,7 +129,6 @@ $(function () {
                         $("#edit-actualCost").val(a.actualcost);
                         $("#edit-budgetCost").val(a.budgetcost);
                         $("#edit-describe").val(a.description);
-
                     })
                 }
             }
@@ -132,6 +141,7 @@ $(function () {
     $("#activityList").on("click", $("input[name=actId]"), function () {
         $("#topActId").prop("checked", $("input[name=actId]").length == $("input[name=actId]:checked").length)
     })
+
     $("#delButton").click(function () {
         var $actId = $("input[name=actId]:checked");
         if ($actId.length == 0) {
@@ -145,17 +155,25 @@ $(function () {
                     params += "&";
                 }
             }
-            alert(params);
+            if (confirm("确定删除吗?")) {
+                $.ajax({
+                    url: "/delAct",
+                    type: "post",
+                    dataType: "json",
+                    data: params,
+                    success: function (r) {
+                        if (r.code == 200) {
+                            actListMap(1, 6);
+                            alert(r.msg);
+                        } else {
+                            alert(r.msg);
+                        }
+                    }
+                })
+            }
         }
     })
-    /*$.ajax({
-        url: "/actList",
-        type: "get",
-        dataType: "json",
-        data: {
-            "aid": $("#SelectUpId").val()
-        }
-    })*/
+
 })
 
 function actListMap(pageNo, pageSize) {
@@ -178,10 +196,7 @@ function actListMap(pageNo, pageSize) {
             $.each(r.data.actList, function (i, a) {
                 html += '<tr class="active">';
                 html += '<td><input type="checkbox" value="' + a.id + '"name="actId"/></td>';
-                /*html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=';
-                detail.html;
-                ';">a.name</a></td>';*/
-                html += '<td>' + a.name + '</td>';
+                html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'/editActindex\';">' + a.name + '</a></td>';
                 html += '<td>' + a.type + '</td>';
                 html += '<td>' + a.state + '</td>';
                 html += '<td>' + a.startDate + '</td>';

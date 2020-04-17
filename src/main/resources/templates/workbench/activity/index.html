@@ -12,144 +12,6 @@
             th:src="@{js/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js}"></script>
     <script type="text/javascript"
             th:src="@{js/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js}"></script>
-    <script type="text/javascript" th:src="@{js/common.js}"></script>
-    <!--<script type="text/javascript">
-        $(function () {
-
-             //以下日历插件在FF中存在兼容问题，在IE浏览器中可以正常使用。
-             /*
-             $("#startTime").datetimepicker({
-                 minView: "month",
-                 language:  'zh-CN',
-                 format: 'yyyy-mm-dd',
-                 autoclose: true,
-                 todayBtn: true,
-                 pickerPosition: "bottom-left"
-             });
-
-             $("#endTime").datetimepicker({
-                 minView: "month",
-                 language:  'zh-CN',
-                 format: 'yyyy-mm-dd',
-                 autoclose: true,
-                 todayBtn: true,
-                 pickerPosition: "bottom-left"
-             });
-             */
-             $('.mydate').datetimepicker({
-                 language: 'zh-CN',//显示中文
-                 format: 'yyyy-mm-dd',//显示格式
-                 minView: "month",//设置只显示到月份
-                 initialDate: new Date(),//初始化当前日期
-                 autoclose: true,//选中自动关闭
-                 todayBtn: true,//显示今日按钮
-                 clearBtn: true
-             })
-             //定制字段
-             $("#definedColumns > li").click(function (e) {
-                 //防止下拉菜单消失
-                 e.stopPropagation();
-             });
-
-             /*
-                1：数据的合法性校验：
-                   1：姓名不能为空。
-                   2：结束日期 不能小于开始日期。
-                   3：实际成本和预算成本只能为非负整数
-                2：开发步骤：
-                   1：找到保存按钮的代码
-                   2：为保存按钮添加点击事件监听
-             */
-             $("#saveMarketActivity").click(function () {
-                 //1：所有者不能为空。
-                 var owner = $.trim($("#create-marketActivityOwner").val());
-                 if (owner.length == 0) {
-                     alert("所有者为必填项！");
-                     return;
-                 }
-                 //2：姓名不能为空。
-                 var name = $.trim($("#create-marketActivityName").val());
-                 if (name.length == 0) {
-                     alert("名称不能为空！");
-                     return;
-                 }
-                 //3：结束日期不能小于开始日期
-                 var startDate = $.trim($("#create-startTime").val());
-                 var endDate = $.trim($("#create-endTime").val());
-                 if (startDate.length > 0 && endDate.length > 0) {
-                     if (endDate < startDate) {
-                         alert("结束日期不能小于开始日期！");
-                         return;
-                     }
-
-                 }
-                 //4:实际成本和预算成本只能为非负整数
-                 /*
-                   1:/  ....   /  ,所有的正则表达式都是以/ 开始  ，/ 结束
-                   2:^ 开始，$ 结束
-                   3：[] 定义匹配字符的范围
-                   4：{} 匹配的是元素的个数
-                            如：[1-9]{1}  ，范围1-9,1位
-
-                   5：缩写：
-                      * ： 零次或者多个
-                      + ：1次或者多次
-                      w : 字母
-                      W ：非字母
-                      d : 数字
-                      D ： 非数字
-                   非负整数：
-                     1-9后面跟任意的数或者是0（1-9选择1位后面跟0-9或者是0 就是我们的非负整数）
-                 */
-                 var reqExp = /^[1-9]{1}[0-9]*$|^0$/;//匹配规则:非负整数  -100000
-                 //实际成本
-                 var actualCost = $.trim($("#create-actualCost").val());
-                 if (actualCost.length > 0 && !reqExp.test(actualCost)) {
-                     alert("实际成本只能为非负整数");
-                     return;
-                 }
-
-                 //预算成本
-                 var budgetCost = $.trim($("#create-budgetCost").val());
-
-                 if (budgetCost.length > 0 && !reqExp.test(budgetCost)) {
-                     alert("预算成本只能为非负整数");
-                     return;
-                 }
-
-                 //-----------校验成功后把数据发送到servlet进行存储-----------------
-
-                 $.ajax({
-                     url: 'workbench/workbench/saveMarketActivity.do',
-                     data: {
-                         owner: $("#create-marketActivityOwner").val(),
-                         type: $("#create-marketActivityType").val(),
-                         name: $("#create-marketActivityName").val(),
-                         state: $("#create-marketActivityState").val(),
-                         startDate: $("#create-startTime").val(),
-                         endDate: $("#create-endTime").val(),
-                         actualCost: $("#create-actualCost").val(),
-                         budgetCost: $("#create-budgetCost").val(),
-                         description: $("#create-describe").val()
-                     }
-                     ,
-                     type: 'post',
-                     success: function (data) {
-                         if (data.success) {
-                             alert("创建成功");
-                             //隐藏模态窗口
-                             $("#createActivityModal").modal("hide");
-                         } else {
-                             alert("创建失败");
-                             //隐藏模态窗口
-                             $("#createActivityModal").modal("show");
-                         }
-                     }
-                 })
-             });
-         });
-     </script>
-     -->
 </head>
 <body>
 <!-- 创建市场活动的模态窗口 -->
@@ -212,15 +74,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="create-startTime" class="col-sm-2 control-label" readonly="true">开始日期<span
+                        <label for="create-startTime" class="col-sm-2 control-label">开始日期<span
                                 style="font-size: 15px; color: red;">*</span></label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control mydate" id="create-startTime">
+                            <input type="text" class="form-control mydate" id="create-startTime" readonly="true">
                         </div>
-                        <label for="create-endTime" class="col-sm-2 control-label" readonly="true">结束日期<span
+                        <label for="create-endTime" class="col-sm-2 control-label">结束日期<span
                                 style="font-size: 15px; color: red;">*</span></label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control mydate" id="create-endTime">
+                            <input type="text" class="form-control mydate" id="create-endTime" readonly="true">
                         </div>
                     </div>
 
@@ -295,14 +157,14 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="cTime">
                         <label for="edit-startTime" class="col-sm-2 control-label">开始日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control mydate" id="edit-startTime">
+                            <input type="text" class="form-control mydate" id="edit-startTime" readonly="true">
                         </div>
                         <label for="edit-endTime" class="col-sm-2 control-label">结束日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control mydate" id="edit-endTime">
+                            <input type="text" class="form-control mydate" id="edit-endTime" readonly="true">
                         </div>
                     </div>
 
@@ -442,14 +304,14 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">开始日期</div>
-                        <input class="form-control mydate" type="text" id="startTime"/>
+                        <input class="form-control mydate" readonly="true" type="text" id="startTime"/>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">结束日期</div>
-                        <input class="form-control mydate" type="text" id="endTime">
+                        <input class="form-control mydate" readonly="true" type="text" id="endTime">
                     </div>
                 </div>
 

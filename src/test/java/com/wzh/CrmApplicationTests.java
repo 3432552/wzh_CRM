@@ -1,6 +1,7 @@
 package com.wzh;
 
 import com.wzh.dao.ActivityMapper;
+import com.wzh.dao.ActivityRemarkMapper;
 import com.wzh.dao.UserMapper;
 import com.wzh.domain.Activity;
 import com.wzh.domain.User;
@@ -19,25 +20,14 @@ class CrmApplicationTests {
     private UserMapper userMapper;
     @Resource
     private ActivityMapper activityMapper;
+    @Autowired
+    private ActivityRemarkMapper activityRemarkMapper;
 
     @Test
     void contextLoads() {
-        Activity activity = new Activity();
-        activity.setOwner("1");
-        activity.setName("去谈合作");
-        activity.setStartDate("2018-03-13");
-        activity.setEndDate("2019-09-18");
-        activity.setType("会议");
-        activity.setState("计划中");
-        activity.setBudgetcost("123");
-        activity.setActualcost("244");
-        activity.setDescription("希望何做能谈下来");
-        int r = activityMapper.addAct(activity);
-        if (r > 0) {
-            System.out.println("新增成功！");
-        } else {
-            System.out.println("新增失败！");
-        }
+        String[] aid = {"27", "26"};
+        int counts = activityRemarkMapper.activityRemarkId(aid);
+        System.out.println("查询的次数:" + counts);
     }
 
 }

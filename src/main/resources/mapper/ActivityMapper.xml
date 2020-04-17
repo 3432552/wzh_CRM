@@ -110,4 +110,11 @@
         #{createBy}
         )
     </insert>
+    <delete id="delActById" parameterType="string">
+        delete from w_activity
+        where id in
+        <foreach collection="array" item="ids" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </delete>
 </mapper>

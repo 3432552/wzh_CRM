@@ -5,6 +5,7 @@ import com.wzh.common.Result;
 import com.wzh.domain.Activity;
 import com.wzh.domain.User;
 import com.wzh.exception.BusinessException;
+import com.wzh.service.ActivityRemarkService;
 import com.wzh.service.ActivityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ import java.util.Map;
 public class ActivityController {
     @Autowired
     private ActivityService activityService;
+    @Autowired
+    private ActivityRemarkService activityRemarkService;
 
     @PostMapping("/addAct")
     public Result addAct(Activity activity, HttpServletRequest request) throws BusinessException {
@@ -60,17 +63,24 @@ public class ActivityController {
         map.put("state", activity.getState());
         map.put("startTime", activity.getStartDate());
         map.put("endTime", activity.getEndDate());
-        System.out.println("------------------------->" + activity.getEndDate());
         PaginationVo<Activity> activityPaginationVo = activityService.actPage(map);
         log.info(activityPaginationVo.toString());
         return Result.ok(activityPaginationVo);
     }
 
     @PostMapping("/updateAct")
-    public Result updateActMes(Activity activity,HttpServletRequest request) throws BusinessException {
-        User u=(User) request.getSession().getAttribute("user");
+    public Result updateActMes(Activity activity, HttpServletRequest request) throws BusinessException {
+        User u = (User) request.getSession().getAttribute("user");
         activity.setEditBy(u.getUserName());
         activityService.updateActInfo(activity);
         return Result.ok();
+    }
+
+    @PostMapping("/delAct")
+    public Result delActMes(HttpServletRequest request) {
+        String[] delIds = request.getParameterValues("id");
+        activityRemarkService.delByRemarkId(delIds);
+        activityService.delActById(delIds);
+        return Result.ok("删除成功");
     }
 }

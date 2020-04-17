@@ -2,7 +2,6 @@ function login() {
     var account = $("#account").val().trim();
     var accountPwd = $("#accountPwd").val().trim();
     var code = $("#code").val().trim();
-    refresh();
     if (account == "") {
         alert("账号不能为空!");
         return;

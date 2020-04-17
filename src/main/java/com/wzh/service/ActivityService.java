@@ -21,4 +21,5 @@ public interface ActivityService {
     int updateActInfo(Activity activity);
 
     List<Activity> actList(String aid);
+    int delActById(String[] aid) throws BusinessException;
 }

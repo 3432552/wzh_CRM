@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class UrlController {
     @RequestMapping("/actindex")
-    public String activity() {
+    public String activity1() {
         return "workbench/activity/index";
+    }
+    @RequestMapping("/editActindex")
+    public String activity2() {
+        return "workbench/activity/detail";
     }
 }
