@@ -37,7 +37,7 @@ public class UserController {
     public String index1() {
         return "index";
     }
-
+    //程序入口
     @RequestMapping("/mes")
     public String index3() {
         return "user/login";
