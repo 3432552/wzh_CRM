@@ -9,7 +9,7 @@ $(function () {
     })
     $("#add-mod").click(function () {
         $.ajax({
-            url: "/userList",
+            url: "/crm/userList",
             type: "get",
             dataType: "json",
             success: function (r) {
@@ -27,7 +27,7 @@ $(function () {
     //新增提交
     $("#saveMarketActivity").click(function () {
         $.ajax({
-            url: "/addAct",
+            url: "/crm/addAct",
             type: "post",
             dataType: "json",
             data: {
@@ -63,7 +63,7 @@ $(function () {
         var $actId = $("input[name=actId]:checked");
         var aid = $actId.val();
         $.ajax({
-            url: "/updateAct",
+            url: "/crm/updateAct",
             type: "post",
             dataType: "json",
             data: {
@@ -98,7 +98,7 @@ $(function () {
         $("#editActivityModal").modal("show");
         var aid = $actId.val();
         $.ajax({
-            url: "/selectListByAid",
+            url: "/crm/selectListByAid",
             type: "get",
             dataType: "json",
             data: {
@@ -150,7 +150,7 @@ $(function () {
             }
             if (confirm("确定删除吗?")) {
                 $.ajax({
-                    url: "/delAct",
+                    url: "/crm/delAct",
                     type: "post",
                     dataType: "json",
                     data: params,
@@ -171,7 +171,7 @@ $(function () {
 
 function actListMap(pageNo, pageSize) {
     $.ajax({
-        url: "/actList",
+        url: "/crm/actList",
         type: "get",
         dataType: "json",
         data: {

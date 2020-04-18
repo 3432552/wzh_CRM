@@ -81,7 +81,7 @@ public class UserController {
      * @param response
      * @param request
      */
-    @GetMapping(value = "gifCode")
+    @GetMapping(value = "/gifCode")
     public void getGifCode(HttpServletResponse response, HttpServletRequest request) {
         try {
             response.setHeader("Pragma", "No-cache");

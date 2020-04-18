@@ -16,7 +16,7 @@ function login() {
     }
     $.ajax({
         type: "post",
-        url: "/login",
+        url: "/crm/login",
         data: {
             "loginAct": account,
             "loginPwd": accountPwd,
@@ -25,7 +25,7 @@ function login() {
         dataType: "json",
         success: function (r) {
             if (r.code == 200) {
-                location.href = "/home";
+                location.href = "/crm/home";
             } else {
                 refresh();
                 $("#mes").html(r.msg);
