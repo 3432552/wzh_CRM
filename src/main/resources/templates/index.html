@@ -5,6 +5,7 @@
     <script type="text/javascript" th:src="@{js/jquery-1.11.1-min.js}"></script>
     <script type="text/javascript" th:src="@{js/bootstrap_3.3.0/js/bootstrap.min.js}"></script>
     <link rel="stylesheet" th:href="@{js/bootstrap_3.3.0/css/bootstrap.min.css}" type="text/css">
+    <script type="text/javascript" th:src="@{js/workbench/activity/index.js}"></script>
 </head>
 <body>
 <!-- 我的资料 -->
@@ -94,7 +95,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
-                        onclick="window.location.href='../login.html';">确定
+                        onclick="window.location.href='/loginOut'">确定
                 </button>
             </div>
         </div>
@@ -119,8 +120,9 @@
                             class="glyphicon glyphicon-file"></span> 我的资料</a></li>
                     <li><a href="javascript:void(0)" data-toggle="modal" data-target="#editPwdModal"><span
                             class="glyphicon glyphicon-edit"></span> 修改密码</a></li>
-                    <li><a href="javascript:void(0);" data-toggle="modal" data-target="#exitModal"><span
-                            class="glyphicon glyphicon-off"></span> 退出</a></li>
+                    <li data-toggle="modal" data-target="#exitModal"><span
+                            class="glyphicon glyphicon-off"></span> 退出
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -142,7 +144,7 @@
                     class="glyphicon glyphicon-time"></span> 审批</a></li>
             <li class="liClass"><a href="javascript:void(0);" target="workareaFrame"><span
                     class="glyphicon glyphicon-user"></span> 客户公海</a></li>
-            <li onclick="actListMap(1,6)" class="liClass"><a th:href="@{/actindex}" target="workareaFrame"><span
+            <li class="liClass"><a th:href="@{/actindex}" target="workareaFrame"><span
                     class="glyphicon glyphicon-play-circle"></span>市场活动</a></li>
             <li class="liClass" id=""><a href="workbench/clue/index.html" target="workareaFrame"><span
                     class="glyphicon glyphicon-search"></span> 线索（潜在客户）</a></li>

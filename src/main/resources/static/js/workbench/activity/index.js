@@ -7,7 +7,6 @@ $(function () {
         todayBtn: true,
         pickerPosition: "bottom-left"
     })
-
     $("#add-mod").click(function () {
         $.ajax({
             url: "/userList",
@@ -27,12 +26,6 @@ $(function () {
     })
     //新增提交
     $("#saveMarketActivity").click(function () {
-        $("#cTime").bind(change, function () {
-            var startTime = $("#create-startTime").val();
-            var endTime = $("#create-endTime").val();
-            alert(startTime + "\t" + endTime);
-        })
-
         $.ajax({
             url: "/addAct",
             type: "post",
