@@ -3,6 +3,7 @@ package com.wzh.controller;
 import com.wzh.common.PaginationVo;
 import com.wzh.common.Result;
 import com.wzh.domain.Activity;
+import com.wzh.domain.ActivityRemark;
 import com.wzh.domain.User;
 import com.wzh.exception.BusinessException;
 import com.wzh.service.ActivityRemarkService;
@@ -10,6 +11,7 @@ import com.wzh.service.ActivityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -70,6 +72,7 @@ public class ActivityController {
 
     @PostMapping("/updateAct")
     public Result updateActMes(Activity activity, HttpServletRequest request) throws BusinessException {
+        log.info("wzh修改后的市场活动信息:" + activity);
         User u = (User) request.getSession().getAttribute("user");
         activity.setEditBy(u.getUserName());
         activityService.updateActInfo(activity);
@@ -82,5 +85,30 @@ public class ActivityController {
         activityRemarkService.delByRemarkId(delIds);
         activityService.delActById(delIds);
         return Result.ok("删除成功");
+    }
+
+    @RequestMapping("/editActindex")
+    public ModelAndView activity2(String id) {
+        log.info("点击市场活动列表名称进入修改界面:" + id);
+        List<Activity> editList = activityService.actList(id);
+        System.out.println("看我修改后的值【】:" + editList.toString());
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("editList", editList);
+        mv.setViewName("workbench/activity/detail");
+        return mv;
+    }
+
+    //备注列表
+    @RequestMapping("/actRemarkList")
+    public Result actRemarkCon(String actId) {
+        List<ActivityRemark> activityRemarkList = activityRemarkService.actRList(actId);
+        return Result.ok(activityRemarkList);
+    }
+
+    //删除备注
+    @RequestMapping("/delRemark")
+    public Result actRemarkDelById(String remarkId) {
+        activityRemarkService.delActRdById(remarkId);
+        return Result.ok();
     }
 }

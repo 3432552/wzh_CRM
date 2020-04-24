@@ -20,16 +20,17 @@ public class UrlController {
         return "workbench/activity/index";
     }
 
-    @RequestMapping("/editActindex")
-    public String activity2() {
-        return "workbench/activity/detail";
-    }
-
     //注销session,返回登录界面
     @RequestMapping("/loginOut")
     public String logout(HttpServletRequest request) {
         HttpSession session = (HttpSession) request.getSession();
         session.invalidate();
         return "user/login";
+    }
+
+    //显示工作台界面
+    @RequestMapping("/workBench")
+    public String activityWorkBench() {
+        return "workbench/main/index";
     }
 }

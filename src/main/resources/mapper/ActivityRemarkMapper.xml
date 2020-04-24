@@ -8,11 +8,19 @@
             #{aid}
         </foreach>
     </select>
+    <select id="actRemarkList" resultType="com.wzh.domain.ActivityRemark">
+        SELECT * FROM w_activity_remark ar
+        WHERE ar.activityId=#{actId}
+    </select>
     <delete id="delActivityRemarkById" parameterType="string">
         delete from w_activity_remark
         where activityId in
         <foreach collection="array" item="aid" open="(" close=")" separator=",">
             #{aid}
         </foreach>
+    </delete>
+    <delete id="delActRemarkById" parameterType="string">
+        delete from w_activity_remark
+        where id=#{id}
     </delete>
 </mapper>

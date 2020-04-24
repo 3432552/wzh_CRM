@@ -1,10 +1,31 @@
 $(function () {
+    //首页的界面
+    //导航中所有文本颜色为黑色
+    $(".liClass > a").css("color", "black");
+
+    //默认选中导航菜单中的第一个菜单项
+    $(".liClass:first").addClass("active");
+
+    //第一个菜单项的文字变成白色
+    $(".liClass:first > a").css("color", "white");
+
+    //给所有的菜单项注册鼠标单击事件
+    $(".liClass").click(function () {
+        //移除所有菜单项的激活状态
+        $(".liClass").removeClass("active");
+        //导航中所有文本颜色为黑色
+        $(".liClass > a").css("color", "black");
+        //当前项目被选中
+        $(this).addClass("active");
+        //当前项目颜色变成白色
+        $(this).children("a").css("color", "white");
+    });
     $(".mydate").datetimepicker({
-        minView: "month",
-        language: 'zh-CN',
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayBtn: true,
+        minView: "month",//设置只显示月份
+        language: 'zh-CN',//语言
+        format: 'yyyy-mm-dd',//显示格式
+        autoclose: true,//选中自动关闭
+        todayBtn: true,//显示今日按钮
         pickerPosition: "bottom-left"
     })
     $("#add-mod").click(function () {
@@ -59,7 +80,6 @@ $(function () {
     })
     //点击修改提交
     $("#edit-update").click(function () {
-        /*alert("name："+$.trim($("#create-marketActivityName").val()));*/
         var $actId = $("input[name=actId]:checked");
         var aid = $actId.val();
         $.ajax({
@@ -189,7 +209,7 @@ function actListMap(pageNo, pageSize) {
             $.each(r.data.actList, function (i, a) {
                 html += '<tr class="active">';
                 html += '<td><input type="checkbox" value="' + a.id + '"name="actId"/></td>';
-                html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'/editActindex\';">' + a.name + '</a></td>';
+                html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'/crm/editActindex?id=' + a.id + '\';">' + a.name + '</a></td>';
                 html += '<td>' + a.type + '</td>';
                 html += '<td>' + a.state + '</td>';
                 html += '<td>' + a.startDate + '</td>';
