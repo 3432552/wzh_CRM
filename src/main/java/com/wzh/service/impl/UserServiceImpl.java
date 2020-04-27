@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
         if (user.getLockState().equals("0")) {
             throw new LoginException("账号已锁定，请联系管理员");
         }
-        if (user.getExpireTime().compareTo(DateUtil.dateTime(new Date())) < 0) {
+        if (user.getExpireTime().compareTo(DateUtil.expireTime(new Date())) < 0) {
             throw new LoginException("账号已失效,请联系管理员");
         }
         if (!user.getAllowIps().contains(ip)) {

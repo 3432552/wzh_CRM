@@ -8,12 +8,15 @@ import com.wzh.domain.User;
 import com.wzh.exception.BusinessException;
 import com.wzh.service.ActivityRemarkService;
 import com.wzh.service.ActivityService;
+import com.wzh.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.RequestWrapper;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +35,7 @@ public class ActivityController {
     @Autowired
     private ActivityRemarkService activityRemarkService;
 
+    //添加市场活动信息
     @PostMapping("/addAct")
     public Result addAct(Activity activity, HttpServletRequest request) throws BusinessException {
         log.info(activity.toString());
@@ -41,6 +45,7 @@ public class ActivityController {
         return Result.ok();
     }
 
+    //根据市场活动id查找市场活动信息
     @RequestMapping("/selectListByAid")
     public Result selectListById(String aid) {
         log.info("选择要修改的市场活动的信息Id:" + aid);
@@ -70,15 +75,19 @@ public class ActivityController {
         return Result.ok(activityPaginationVo);
     }
 
+    //修改市场活动信息
     @PostMapping("/updateAct")
     public Result updateActMes(Activity activity, HttpServletRequest request) throws BusinessException {
         log.info("wzh修改后的市场活动信息:" + activity);
         User u = (User) request.getSession().getAttribute("user");
         activity.setEditBy(u.getUserName());
+        log.info("修改备注的时间:" + new Date());
+        activity.setEditTime(new Date());
         activityService.updateActInfo(activity);
         return Result.ok();
     }
 
+    //批量删除市场活动
     @PostMapping("/delAct")
     public Result delActMes(HttpServletRequest request) {
         String[] delIds = request.getParameterValues("id");
@@ -87,6 +96,7 @@ public class ActivityController {
         return Result.ok("删除成功");
     }
 
+    //点击市场活动列表名称进入修改界面:
     @RequestMapping("/editActindex")
     public ModelAndView activity2(String id) {
         log.info("点击市场活动列表名称进入修改界面:" + id);
@@ -101,8 +111,41 @@ public class ActivityController {
     //备注列表
     @RequestMapping("/actRemarkList")
     public Result actRemarkCon(String actId) {
+        log.info("备注列表根据外键:" + actId);
         List<ActivityRemark> activityRemarkList = activityRemarkService.actRList(actId);
         return Result.ok(activityRemarkList);
+    }
+
+    //查询备注列表
+    @RequestMapping("/selRemarkList")
+    public Result selRemarkByIdCon(String remarkId) {
+        log.info("备注列表根据Id:" + remarkId);
+        ActivityRemark a = activityRemarkService.getRemarkListById(remarkId);
+        return Result.ok(a);
+    }
+
+    //修改备注
+    @RequestMapping("/updateRemark")
+    public Result updateRemarkByIdCon(ActivityRemark activityRemark, HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        User u = (User) request.getSession().getAttribute("user");
+        activityRemark.setEditBy(u.getUserName());
+        activityRemark.setEditTime(new Date());
+        map.put("id", activityRemark.getId());
+        map.put("remark", activityRemark.getNoteContent());
+        map.put("editTime", activityRemark.getEditTime());
+        map.put("editBy", activityRemark.getEditBy());
+        activityRemarkService.updateRemarkSer(activityRemark);
+        return Result.ok(map);
+    }
+
+    //新增备注
+    @PostMapping("/addRemark")
+    public Result addRemarkCon(ActivityRemark activityRemark, HttpServletRequest request) {
+        User u = (User) request.getSession().getAttribute("user");
+        activityRemark.setCreateBy(u.getCreateBy());
+        activityRemarkService.addRemark(activityRemark);
+        return Result.ok(activityRemark);
     }
 
     //删除备注

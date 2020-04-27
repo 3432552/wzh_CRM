@@ -15,36 +15,8 @@ $(function () {
     $("#remarkBody").on("mouseout", ".remarkDiv", function () {
         $(this).children("div").children("div").hide();
     })
-    //备注列表,ajax
-    $.ajax({
-        url: "/crm/actRemarkList",
-        type: "get",
-        dataType: "json",
-        data: {
-            "actId": $("#sId").val()
-        },
-        success: function (r) {
-            //市场活动备注
-            var html = "";
-            $.each(r.data, function (a, b) {
-                html += '<div id="' + b.id + '" class="remarkDiv" style="height: 60px;">'
-                html += '<img src="../../../image/home.png" title="wzh" style="width: 30px; height:30px;">'
-                html += '<div style="position: relative; top: -40px; left: 50px;" id="remarkBody">'
-                html += '<h5>' + b.noteContent + '</h5>'
-                html += '<font color="gray">市场活动</font> <font color="gray">-</font> <b>&nbsp;</b>'
-                html += '<small style="color: gray;">' + b.editTime + ' &nbsp;由&nbsp;&nbsp;' + b.editBy + '</small>'
-                html += '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">'
-                html += '<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: red;"></span></a>'
-                html += '&nbsp;&nbsp;&nbsp;&nbsp;'
-                html += '<a onclick="delActId(' + b.id + ')" class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: red;"></span></a>'
-                html += '</div>'
-                html += '</div>'
-                html += '</div>'
-            })
-            $("#remarkDiv").before(html);
-        }
-    })
-    //点击名称进去先把要修改的数据加载出来
+    remarkList();
+    //点击名称进去点击编辑进行修改时，把要修改的数据加载出来
     $("#e-edit").click(function () {
         $("#editActivityModal").modal("show");
         $.ajax({
@@ -101,8 +73,158 @@ $(function () {
             }
         })
     })
+    //新增备注信息
+    $("#saveRemark").click(function () {
+        if ($.trim($("#remark").val()) == "") {
+            alert("请输入备注信息!");
+            return;
+        }
+        $.ajax({
+            url: "/crm/addRemark",
+            type: "post",
+            dataType: "json",
+            data: {
+                "noteContent": $.trim($("#remark").val()),
+                "activityId": $("#sId").val()
+            },
+            success: function (r) {
+                $("#remark").val("");
+                if (r.code == 200) {
+                    //alert("市场活动新增备注id:" + r.data.id);
+                    //市场活动备注
+                    var html = "";
+                    html += '<div id="' + r.data.id + '" class="remarkDiv" style="height: 60px;">'
+                    html += '<img src="image/user-thumbnail.png" title="wzh" style="width: 30px; height:30px;">'
+                    html += '<div style="position: relative; top: -40px; left: 50px;" id="remarkBody">'
+                    html += '<h5 id="r' + r.data.id + '">' + r.data.noteContent + '</h5>'
+                    html += '<font color="gray">市场活动</font> <font color="gray">-</font> <b>&nbsp;</b>'
+                    html += '<small id="m' + r.data.id + '" style="color: gray;">' + r.data.createTime + ' &nbsp;由&nbsp;&nbsp;' + r.data.createBy + '</small>'
+                    html += '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">'
+                    html += '<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: red;"></span></a>'
+                    html += '&nbsp;&nbsp;&nbsp;&nbsp;'
+                    html += '<a onclick="delActId(' + r.data.id + ')" class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: red;"></span></a>'
+                    html += '</div>'
+                    html += '</div>'
+                    html += '</div>'
+                    $("#remarkDiv").before(html);
+                    //目的是让新增的备注在上面显示
+                    $.ajax({
+                        url: "/crm/actRemarkList",
+                        type: "get",
+                        dataType: "json",
+                        data: {
+                            "actId": $("#sId").val()
+                        },
+                        success: function (r) {
+                            //市场活动备注
+                            var html = "";
+                            $.each(r.data, function (a, b) {
+                                html += '<div id="' + b.id + '" class="remarkDiv" style="height: 60px;">'
+                                html += '<img src="image/user-thumbnail.png" title="wzh" style="width: 30px; height:30px;">'
+                                html += '<div style="position: relative; top: -40px; left: 50px;" id="remarkBody">'
+                                html += '<h5 id="r\' + b.id + \'">' + b.noteContent + '</h5>'
+                                html += '<font color="gray">市场活动</font> <font color="gray">-</font> <b>&nbsp;</b>'
+                                html += '<small id="m\' + r.data.id + \'" style="color: gray;">' + b.editTime + ' &nbsp;由&nbsp;&nbsp;' + b.editBy + '</small>'
+                                html += '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">'
+                                html += '<a onclick="editRemark(' + b.id + ')" class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: red;"></span></a>'
+                                html += '&nbsp;&nbsp;&nbsp;&nbsp;'
+                                html += '<a onclick="delActId(' + b.id + ')" class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: red;"></span></a>'
+                                html += '</div>'
+                                html += '</div>'
+                                html += '</div>'
+                                $("#" + b.id).remove();
+                            })
+                            $("#remarkDiv").before(html);
+                        }
+                    })
+                    alert("新增备注成功!");
+                } else {
+                    alert(r.msg);
+                }
+            }
+        })
+    })
 })
 
+function editRemark(id) {
+    $("#editRemarkModal").modal("show");
+    $.ajax({
+        url: "/crm/selRemarkList",
+        type: "get",
+        dataType: "json",
+        data: {
+            "remarkId": id
+        },
+        success: function (r) {
+            if (r.code == 200) {
+                $("#noteContent").val(r.data.noteContent);
+            } else {
+                alert(r.msg);
+            }
+        }
+    })
+    //修改备注
+    $("#updateRemarkBtn").click(function () {
+        if ($.trim($("#noteContent").val()) == "") {
+            alert("请修改备注信息!");
+            return;
+        }
+        $.ajax({
+            url: "/crm/updateRemark",
+            type: "post",
+            dataType: "json",
+            data: {
+                "id": id,
+                "noteContent": $("#noteContent").val()
+            },
+            success: function (r) {
+                //alert("市场活动更新备注id:" + r.data.id);
+                if (r.code == 200) {
+                    $("#r" + r.data.id).html(r.data.remark);
+                    $("#m" + r.data.id).html(r.data.editTime + "&nbsp;由&nbsp;&nbsp;" + r.data.editBy);
+                    alert("修改备注信息成功!");
+                    $("#editRemarkModal").modal("hide");
+                } else {
+                    alert(r.msg);
+                }
+            }
+        })
+    })
+}
+
+function remarkList() {
+    //备注列表,ajax
+    $.ajax({
+        url: "/crm/actRemarkList",
+        type: "get",
+        dataType: "json",
+        data: {
+            "actId": $("#sId").val()
+        },
+        success: function (r) {
+            //市场活动备注
+            var html = "";
+            $.each(r.data, function (a, b) {
+                html += '<div id="' + b.id + '" class="remarkDiv" style="height: 60px;">'
+                html += '<img src="image/user-thumbnail.png" title="wzh" style="width: 30px; height:30px;">'
+                html += '<div style="position: relative; top: -40px; left: 50px;" id="remarkBody">'
+                html += '<h5 id="r' + b.id + '">' + b.noteContent + '</h5>'
+                html += '<font color="gray">市场活动</font> <font color="gray">-</font> <b>&nbsp;</b>'
+                html += '<small id="m' + b.id + '" style="color: gray;">' + b.editTime + ' &nbsp;由&nbsp;&nbsp;' + b.editBy + '</small>'
+                html += '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">'
+                html += '<a onclick="editRemark(' + b.id + ')" class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: red;"></span></a>'
+                html += '&nbsp;&nbsp;&nbsp;&nbsp;'
+                html += '<a onclick="delActId(' + b.id + ')" class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: red;"></span></a>'
+                html += '</div>'
+                html += '</div>'
+                html += '</div>'
+            })
+            $("#remarkDiv").before(html);
+        }
+    })
+}
+
+//删除备注
 function delActId(id) {
     if (confirm("确定删除吗?")) {
         $.ajax({

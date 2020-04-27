@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -26,9 +27,7 @@ class CrmApplicationTests {
 
     @Test
     void contextLoads() {
-        String aid = "27";
-        List<ActivityRemark> list = activityRemarkMapper.actRemarkList(aid);
-        System.out.println(list.toString());
+        System.out.println("当前时间:" + DateUtil.expireTime(new Date()));
     }
 
 }

@@ -82,7 +82,7 @@
         order by act.createTime desc
         limit #{skipPageNum},#{pageSize}
     </select>
-    <insert id="addAct" parameterType="com.wzh.domain.Activity">
+    <insert id="addAct" parameterType="com.wzh.domain.Activity" keyProperty="id">
      insert into w_activity(
         owner,
         name,
