@@ -189,6 +189,53 @@ $(function () {
 
 })
 
+//更新密码
+function updatePwd() {
+    var oldPwd = $.trim($("#oldPwd").val());
+    var newPwd = $.trim($("#newPwd").val());
+    var confirmPwd = $.trim($("#confirmPwd").val());
+    if (oldPwd == null || oldPwd == "") {
+        alert("请输入旧密码!");
+        return;
+    }
+    if (newPwd == null || newPwd == "") {
+        alert("请输入新密码!");
+        return;
+    }
+    if (confirmPwd == null || confirmPwd == "") {
+        alert("请在输入一遍新密码!");
+        return;
+    }
+    if (newPwd != confirmPwd) {
+        alert("新密码输入前后不一致，请重新输入!");
+        return;
+    }
+    $.ajax({
+        url: "/crm/updatePassword",
+        type: "post",
+        dataType: "json",
+        data: {
+            "oldPwd": $.trim($("#oldPwd").val()),
+            "newPwd": $.trim($("#newPwd").val())
+        },
+        success: function (r) {
+            if (r.code == 200) {
+                $("#oldPwd").val("");
+                $("#newPwd").val("");
+                $("#confirmPwd").val("");
+                alert("修改密码成功!");
+                //跳转到登录页面,主要清除session信息
+                window.location.href = "/crm/loginOut";
+            } else {
+                alert(r.msg);
+                $("#oldPwd").val("");
+                $("#newPwd").val("");
+                $("#confirmPwd").val("");
+            }
+        }
+    })
+}
+
 function actListMap(pageNo, pageSize) {
     $.ajax({
         url: "/crm/actList",

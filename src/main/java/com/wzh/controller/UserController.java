@@ -111,6 +111,7 @@ public class UserController {
         String id = us.getId();
         log.info("从session取的用户的id:" + id);
         userService.updatePwd(id, newPwd);
+        request.getSession().invalidate();
         return Result.ok();
     }
 }
