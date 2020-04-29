@@ -20,14 +20,13 @@ import javax.servlet.http.HttpSession;
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("==========================>" + "拦截器开始生效...");
         String url = request.getRequestURI();
         log.info("拦截的url:" + url);
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            log.info("拦截器中，没值就进来了！");
-            response.sendRedirect("/user/n");
+        User user = (User) request.getSession().getAttribute(
+                "user");
+        if (null == user) {
+            //重定向到登陆界面
+            response.sendRedirect("/crm/mes");
             return false;
         }
         return true;

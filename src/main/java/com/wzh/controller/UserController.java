@@ -44,7 +44,9 @@ public class UserController {
     }
 
     @RequestMapping("/n")
+    @ResponseBody
     public String index2() {
+        System.out.println("测试拦截器。。。。。。。。。。。。。");
         return "test";
     }
 

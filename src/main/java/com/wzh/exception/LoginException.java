@@ -3,7 +3,7 @@ package com.wzh.exception;
 /**
  * @Author: wzh
  * @ClassName: LoginException
- * @Description:
+ * @Description:  自定义登陆异常
  * @Date: 2020/3/28 22:48
  */
 public class LoginException extends RuntimeException {

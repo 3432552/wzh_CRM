@@ -23,8 +23,7 @@ public class UrlController {
     //注销session,返回登录界面
     @RequestMapping("/loginOut")
     public String logout(HttpServletRequest request) {
-        HttpSession session = (HttpSession) request.getSession();
-        session.invalidate();
+        request.getSession().invalidate();
         return "user/login";
     }
 

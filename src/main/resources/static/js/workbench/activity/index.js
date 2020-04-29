@@ -223,7 +223,7 @@ function updatePwd() {
                 $("#oldPwd").val("");
                 $("#newPwd").val("");
                 $("#confirmPwd").val("");
-                alert("修改密码成功!");
+                alert("修改密码成功,请重新登陆!");
                 //跳转到登录页面,主要清除session信息
                 window.location.href = "/crm/loginOut";
             } else {
