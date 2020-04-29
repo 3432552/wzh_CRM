@@ -2,17 +2,16 @@ package com.wzh.controller;
 
 import com.wzh.common.Result;
 import com.wzh.domain.User;
+import com.wzh.exception.BusinessException;
 import com.wzh.exception.LoginException;
 import com.wzh.service.UserService;
+import com.wzh.util.MD5Utils;
 import com.wzh.util.vcode.Captcha;
 import com.wzh.util.vcode.GifCaptcha;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +36,7 @@ public class UserController {
     public String index1() {
         return "index";
     }
+
     //程序入口
     @RequestMapping("/mes")
     public String index3() {
@@ -97,5 +97,20 @@ public class UserController {
         } catch (Exception e) {
             log.error("图形验证码生成失败", e);
         }
+    }
+
+    /**
+     * 更新密码
+     */
+    @PostMapping(value = "/updatePassword")
+    @ResponseBody
+    public Result updatePwd(String newPwd, String oldPwd, HttpServletRequest request) throws BusinessException {
+        //为了service层前端传来原密码与数据库原密码比对
+        request.getSession().setAttribute("op", oldPwd);
+        User us = (User) request.getSession().getAttribute("user");
+        String id = us.getId();
+        log.info("从session取的用户的id:" + id);
+        userService.updatePwd(id, newPwd);
+        return Result.ok();
     }
 }

@@ -1,6 +1,7 @@
 package com.wzh.service;
 
 import com.wzh.domain.User;
+import com.wzh.exception.BusinessException;
 import com.wzh.exception.LoginException;
 
 import java.util.List;
@@ -13,5 +14,8 @@ import java.util.List;
  */
 public interface UserService {
     List<User> getUserList();
+
     User userLogin(String loginAct, String loginPwd, String ip) throws LoginException;
+
+    int updatePwd(String id, String newPwd) throws BusinessException;
 }

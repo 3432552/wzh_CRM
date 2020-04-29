@@ -14,5 +14,7 @@ import java.util.List;
  */
 public interface UserMapper {
     List<User> userList();
+    User selUserById(String id);
     User login(@Param("loginAct") String loginAct, @Param("loginPwd") String loginPwd) throws LoginException;
+    int updatePwdById(@Param("id") String id,@Param("newPwd") String newPwd);
 }

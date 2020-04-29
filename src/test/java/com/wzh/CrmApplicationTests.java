@@ -26,8 +26,16 @@ class CrmApplicationTests {
     private ActivityRemarkMapper activityRemarkMapper;
 
     @Test
-    void contextLoads() {
-        System.out.println("当前时间:" + DateUtil.expireTime(new Date()));
+    void contextLoads1() {
+        int res = userMapper.updatePwdById("1", "12345");
+        if (res>0){
+            System.out.println("修改密码成功!");
+        }
+    }
+
+    @Test
+    void contextLoads2() {
+        System.out.println("新密码:" + MD5Utils.MD5("12345"));
     }
 
 }
