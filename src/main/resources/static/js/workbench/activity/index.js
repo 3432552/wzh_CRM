@@ -65,11 +65,11 @@ $(function () {
             success: function (r) {
                 if (r.code == 200) {
                     actListMap(1, 6);
-                    alert("新增成功");
+                    toastr.success("新增成功");
                     $("#marketform")[0].reset();
                     $("#createActivityModal").modal("hide");
                 } else {
-                    alert(r.msg);
+                    toastr.error(r.msg);
                 }
             }
         })
@@ -98,9 +98,9 @@ $(function () {
             success: function (r) {
                 if (r.code == 200) {
                     actListMap(1, 6);
-                    alert("修改成功!");
+                    toastr.success("修改成功!");
                 } else {
-                    alert(r.msg);
+                    toastr.error(r.msg);
                 }
             }
         })
@@ -109,10 +109,10 @@ $(function () {
     $("#edit-mod").click(function () {
         var $actId = $("input[name=actId]:checked");
         if ($actId.length == 0) {
-            alert("请至少要选择一条市场活动信息修改!");
+            toastr.warning("请至少要选择一条市场活动信息修改!");
             return;
         } else if ($actId.length > 1) {
-            alert("只能选择一条市场活动信息修改!");
+            toastr.warning("只能选择一条市场活动信息修改!");
             return;
         }
         $("#editActivityModal").modal("show");
@@ -158,7 +158,7 @@ $(function () {
     $("#delButton").click(function () {
         var $actId = $("input[name=actId]:checked");
         if ($actId.length == 0) {
-            alert("请至少要选择一条市场活动信息删除!");
+            toastr.warning("请至少要选择一条市场活动信息删除!");
         } else {
             //拼接参数
             var params = "";
@@ -177,9 +177,9 @@ $(function () {
                     success: function (r) {
                         if (r.code == 200) {
                             actListMap(1, 6);
-                            alert(r.msg);
+                            toastr.success(r.msg);
                         } else {
-                            alert(r.msg);
+                            toastr.error(r.msg);
                         }
                     }
                 })
@@ -195,19 +195,19 @@ function updatePwd() {
     var newPwd = $.trim($("#newPwd").val());
     var confirmPwd = $.trim($("#confirmPwd").val());
     if (oldPwd == null || oldPwd == "") {
-        alert("请输入旧密码!");
+        toastr.warning("请输入旧密码!");
         return;
     }
     if (newPwd == null || newPwd == "") {
-        alert("请输入新密码!");
+        toastr.warning("请输入新密码!");
         return;
     }
     if (confirmPwd == null || confirmPwd == "") {
-        alert("请在输入一遍新密码!");
+        toastr.warning("请在输入一遍新密码!");
         return;
     }
     if (newPwd != confirmPwd) {
-        alert("新密码输入前后不一致，请重新输入!");
+        toastr.warning("新密码输入前后不一致，请重新输入!");
         return;
     }
     $.ajax({
@@ -223,11 +223,11 @@ function updatePwd() {
                 $("#oldPwd").val("");
                 $("#newPwd").val("");
                 $("#confirmPwd").val("");
-                alert("修改密码成功,请重新登陆!");
+                toastr.success("修改密码成功,请重新登陆!");
                 //跳转到登录页面,主要清除session信息
                 window.location.href = "/crm/loginOut";
             } else {
-                alert(r.msg);
+                toastr.error(r.msg);
                 $("#oldPwd").val("");
                 $("#newPwd").val("");
                 $("#confirmPwd").val("");

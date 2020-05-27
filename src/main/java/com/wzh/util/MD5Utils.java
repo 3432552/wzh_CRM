@@ -10,7 +10,7 @@ import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
  * @Author: wzh
  * @ClassName: MD5Utils加密
  * @Description:
- * @Date: 2020/3/29 14:12
+ * @Date: 2020/4/29 14:12
  */
 public class MD5Utils {
     /**
@@ -45,7 +45,6 @@ public class MD5Utils {
         return hexValue.toString();
     }
 
-
     /**
      * 加盐MD5
      *
@@ -71,7 +70,6 @@ public class MD5Utils {
             cs[i + 1] = c;
             cs[i + 2] = password.charAt(i / 3 * 2 + 1);
         }
-        System.out.println("加盐MD5:" + new String(cs));
         return new String(cs);
     }
 

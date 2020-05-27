@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 /**
  * @Author: wzh
  * @ClassName: InterceptorConfig
- * @Description:  实现WebMvcConfigurer，springboot新版本都这么做
+ * @Description: 实现WebMvcConfigurer，springboot新版本都这么做
  * @Date: 2020/3/29 18:30
  */
 @Configuration
@@ -33,6 +33,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor).
                 addPathPatterns("/**").excludePathPatterns
-                ("/mes", "/gifCode", "login", "/**/*.css", "/**/*.html", "/**/*.js", "/**/*.png", "/**/*.JPG", "/**/*.jpeg", "/**/*.woff");
+                ("/mes", "/gifCode", "/login", "/**/*.css", "/**/*.html", "/**/*.js", "/**/*.png", "/**/*.JPG", "/**/*.jpeg", "/**/*.woff");
     }
 }

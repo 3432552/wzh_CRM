@@ -28,14 +28,17 @@ class CrmApplicationTests {
     @Test
     void contextLoads1() {
         int res = userMapper.updatePwdById("1", "12345");
-        if (res>0){
+        if (res > 0) {
             System.out.println("修改密码成功!");
         }
     }
 
     @Test
     void contextLoads2() {
-        System.out.println("新密码:" + MD5Utils.MD5("12345"));
+        String dbPwd = "123456";
+        String saltPwd = MD5Utils.generate(dbPwd);
+        System.out.println("普通加密:" + MD5Utils.MD5(dbPwd));
+        System.out.println("加盐密码:" + saltPwd);
+        System.out.println("校验是否成功:" + MD5Utils.verify("123456", saltPwd));
     }
-
 }

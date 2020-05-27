@@ -11,10 +11,6 @@ import java.util.HashMap;
  * @Date: 2020/3/27 23:53
  */
 public class Result extends HashMap<String, Object> {
-    private Integer code;
-    private String msg;
-    private Object data;
-
     public Result() {
         put("code", 200);
         put("msg", "操作成功");

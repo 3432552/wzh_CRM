@@ -1,4 +1,6 @@
 $(function () {
+    //toastr 消息弹出框 初始化出现位置上中
+    //参数设置，若用默认值可以省略以下面代
     $("#loginBy").click(function () {
         login();
     })
@@ -18,15 +20,15 @@ function login() {
     var accountPwd = $.trim($("#accountPwd").val());
     var code = $.trim($("#code").val());
     if (account == "") {
-        alert("账号不能为空!");
+        toastr.warning('账号不能为空!');
         return;
     }
     if (accountPwd == "") {
-        alert("密码不能为空!");
+        toastr.warning("密码不能为空!");
         return;
     }
     if (code == "") {
-        alert("验证码不能为空!");
+        toastr.warning("验证码不能为空!");
         return;
     }
     $.ajax({

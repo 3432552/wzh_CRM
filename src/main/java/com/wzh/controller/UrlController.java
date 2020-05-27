@@ -15,9 +15,16 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class UrlController {
+    //市场活动
     @RequestMapping("/actindex")
     public String activity1() {
         return "workbench/activity/index";
+    }
+
+    //线索
+    @RequestMapping("/clueindex")
+    public String clue() {
+        return "clue/index";
     }
 
     //注销session,返回登录界面

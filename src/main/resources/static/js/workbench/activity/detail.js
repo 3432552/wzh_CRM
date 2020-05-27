@@ -66,9 +66,9 @@ $(function () {
             },
             success: function (r) {
                 if (r.code == 200) {
-                    alert("修改成功!");
+                    toastr.success("修改成功!");
                 } else {
-                    alert(r.msg);
+                    toastr.error(r.msg);
                 }
             }
         })
@@ -76,7 +76,7 @@ $(function () {
     //新增备注信息
     $("#saveRemark").click(function () {
         if ($.trim($("#remark").val()) == "") {
-            alert("请输入备注信息!");
+            toastr.warning("请输入备注信息!");
             return;
         }
         $.ajax({
@@ -137,9 +137,9 @@ $(function () {
                             $("#remarkDiv").before(html);
                         }
                     })
-                    alert("新增备注成功!");
+                    toastr.success("新增备注成功!");
                 } else {
-                    alert(r.msg);
+                    toastr.error(r.msg);
                 }
             }
         })
@@ -159,14 +159,14 @@ function editRemark(id) {
             if (r.code == 200) {
                 $("#noteContent").val(r.data.noteContent);
             } else {
-                alert(r.msg);
+                toastr.error(r.msg);
             }
         }
     })
     //修改备注
     $("#updateRemarkBtn").click(function () {
         if ($.trim($("#noteContent").val()) == "") {
-            alert("请修改备注信息!");
+            toastr.warning("请修改备注信息!");
             return;
         }
         $.ajax({
@@ -182,10 +182,10 @@ function editRemark(id) {
                 if (r.code == 200) {
                     $("#r" + r.data.id).html(r.data.remark);
                     $("#m" + r.data.id).html(r.data.editTime + "&nbsp;由&nbsp;&nbsp;" + r.data.editBy);
-                    alert("修改备注信息成功!");
+                    toastr.success("修改备注信息成功!");
                     $("#editRemarkModal").modal("hide");
                 } else {
-                    alert(r.msg);
+                    toastr.error(r.msg);
                 }
             }
         })
@@ -237,9 +237,9 @@ function delActId(id) {
             success: function (r) {
                 if (r.code == 200) {
                     $("#" + id).remove();
-                    alert("删除备注成功!");
+                    toastr.success("删除备注成功!");
                 } else {
-                    alert(r.msg);
+                    toastr.error(r.msg);
                 }
             }
         })
