@@ -1,6 +1,5 @@
 package com.wzh.controller;
 
-import com.wzh.common.PaginationVo;
 import com.wzh.common.Result;
 import com.wzh.domain.Activity;
 import com.wzh.domain.ActivityRemark;
@@ -8,14 +7,14 @@ import com.wzh.domain.User;
 import com.wzh.exception.BusinessException;
 import com.wzh.service.ActivityRemarkService;
 import com.wzh.service.ActivityService;
-import com.wzh.util.DateUtil;
+import com.wzh.util.Page;
+import com.wzh.vo.PageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.ws.RequestWrapper;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,25 +53,26 @@ public class ActivityController {
     }
 
     @RequestMapping("/actList")
-    public Result actListCon(Activity activity, String pageNo, String pageSize) {
-        log.info(activity.toString());
-        //pageNO为第几页，这里计算下略过记录数 （limit 0,3 ====第一页展示三条数据）
-        int pageNo1 = Integer.valueOf(pageNo);
-        int pageSize1 = Integer.valueOf(pageSize);
-        //略过的记录数
-        int skipPageNum = (pageNo1 - 1) * pageSize1;
+    public Result actListCon(Activity activity, @RequestParam(value = "pageNo", defaultValue = "1") String pageNo, @RequestParam(value = "pageSize", defaultValue = "10") String pageSize) {
+        log.info("接收前端传来的Activity数据:" + activity.toString() + "pageNo:" + pageNo + "\t" + "pageSize:" + pageSize);
+        Page page = new Page();
+        //设置当前页码
+        page.setCurrent(Integer.valueOf(pageNo));
+        //设置每页条数
+        page.setLimit(Integer.valueOf(pageSize));
+        //略过的条数,用于传给limit的第一个参数
+        int pageStarIndex = page.getOffset();
         Map<String, Object> map = new HashMap<>();
-        map.put("skipPageNum", skipPageNum);
-        map.put("pageSize", pageSize1);
+        map.put("pageNo", pageStarIndex);
+        map.put("pageSize", Integer.valueOf(pageSize));
         map.put("name", activity.getName());
         map.put("owner", activity.getOwner());
         map.put("type", activity.getType());
         map.put("state", activity.getState());
         map.put("startTime", activity.getStartDate());
         map.put("endTime", activity.getEndDate());
-        PaginationVo<Activity> activityPaginationVo = activityService.actPage(map);
-        log.info(activityPaginationVo.toString());
-        return Result.ok(activityPaginationVo);
+        PageVo pageVom = activityService.getPageMesVo(map, page.getCurrent(), page.getLimit());
+        return Result.ok(pageVom);
     }
 
     //修改市场活动信息

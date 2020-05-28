@@ -148,7 +148,7 @@ $(function () {
         })
     })
     $("#search").click(function () {
-        actListMap(1, 6);
+        actListMap(2, 5);
     })
     //动态元素绑定复选框方式
     $("#activityList").on("click", $("input[name=actId]"), function () {
@@ -253,7 +253,7 @@ function actListMap(pageNo, pageSize) {
         },
         success: function (r) {
             var html = "";
-            $.each(r.data.actList, function (i, a) {
+            $.each(r.data.dataList, function (i, a) {
                 html += '<tr class="active">';
                 html += '<td><input type="checkbox" value="' + a.id + '"name="actId"/></td>';
                 html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'/crm/editActindex?id=' + a.id + '\';">' + a.name + '</a></td>';

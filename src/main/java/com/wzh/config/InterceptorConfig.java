@@ -18,7 +18,7 @@ import javax.annotation.Resource;
  * @Description: 实现WebMvcConfigurer，springboot新版本都这么做
  * @Date: 2020/3/29 18:30
  */
-@Configuration
+//@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
     @Autowired
     private LoginInterceptor loginInterceptor;

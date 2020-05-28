@@ -1,17 +1,19 @@
 package com.wzh.service.impl;
 
 
-import com.wzh.common.PaginationVo;
 import com.wzh.dao.ActivityMapper;
 import com.wzh.domain.Activity;
 import com.wzh.exception.BusinessException;
 import com.wzh.service.ActivityService;
+import com.wzh.util.Page;
+import com.wzh.vo.PageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,19 +43,25 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public PaginationVo<Activity> actPage(Map<String, Object> pageMap) {
-        int total = activityMapper.totalNum(pageMap);
-        List<Activity> aList = activityMapper.activityListByCondition(pageMap);
-        PaginationVo<Activity> paginationVo = new PaginationVo<>();
-        paginationVo.setTotal(total);
-        paginationVo.setActList(aList);
-        return paginationVo;
-    }
-
-    @Override
     public List<Activity> actList(String aid) {
         List<Activity> activities = activityMapper.updateSelActivityById(aid);
         return activities;
+    }
+
+    @Override
+    public PageVo getPageMesVo(Map<String, Object> pageVo, int current, int pageSize) {
+        Page page = new Page();
+        int total = activityMapper.totalNum(pageVo);
+        page.setCurrent(current);
+        page.setLimit(pageSize);
+        page.setRows(total);
+        List<Activity> actList = activityMapper.activityListByCondition(pageVo);
+        PageVo vo = new PageVo();
+        vo.setCurrentPage(page.getCurrent());
+        vo.setTotalPages(page.getTotalPages());
+        vo.setTotalRows(total);
+        vo.setDataList(actList);
+        return vo;
     }
 
     @Override

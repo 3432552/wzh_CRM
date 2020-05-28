@@ -6,15 +6,19 @@ import com.wzh.dao.UserMapper;
 import com.wzh.domain.Activity;
 import com.wzh.domain.ActivityRemark;
 import com.wzh.domain.User;
+import com.wzh.service.ActivityService;
 import com.wzh.util.DateUtil;
 import com.wzh.util.MD5Utils;
+import com.wzh.vo.PageVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class CrmApplicationTests {
@@ -24,13 +28,27 @@ class CrmApplicationTests {
     private ActivityMapper activityMapper;
     @Autowired
     private ActivityRemarkMapper activityRemarkMapper;
+    @Autowired
+    private ActivityService activityService;
 
     @Test
     void contextLoads1() {
-        int res = userMapper.updatePwdById("1", "12345");
-        if (res > 0) {
-            System.out.println("修改密码成功!");
-        }
+        Map<String, Object> map = new HashMap<>();
+        int pageNo1 = 2;
+        int pageSize1 = 5;
+        //略过的记录数
+        int skipPageNum = (pageNo1 - 1) * pageSize1;
+        map.put("pageNo", skipPageNum);
+        map.put("pageSize", pageSize1);
+        List<Activity> activityList = activityMapper.activityListByCondition(map);
+        System.out.println("数据=====》:" + activityList.toString());
+    }
+
+    @Test
+    void contextLoads5() {
+        Map<String, Object> map = new HashMap<>();
+        int nums = activityMapper.totalNum(map);
+        System.out.println("多少条数据》:" + nums);
     }
 
     @Test

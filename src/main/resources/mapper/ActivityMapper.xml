@@ -79,8 +79,7 @@
                 and act.endDate &lt; #{endTime}
             </if>
         </where>
-        order by act.createTime desc
-        limit #{skipPageNum},#{pageSize}
+        limit #{pageNo},#{pageSize}
     </select>
     <insert id="addAct" parameterType="com.wzh.domain.Activity" keyProperty="id">
      insert into w_activity(

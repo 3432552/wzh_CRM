@@ -13,10 +13,11 @@ import java.util.Map;
  * @Date: 2020/4/4 17:04
  */
 public interface ActivityMapper {
-    int totalNum(Map<String, Object> totalMap);
+    //多参数入参可以用map,市场活动列表条件查询带分页
+    List<Activity> activityListByCondition(Map<String, Object> actListByCondition);
 
-    //多参数入参可以用map
-    List<Activity> activityListByCondition(Map<String, Object> actDaoList);
+    //查询市场活动列表多少条数据
+    int totalNum(Map<String, Object> selCount);
 
     //修改先查出来信息
     List<Activity> updateSelActivityById(String aid);
