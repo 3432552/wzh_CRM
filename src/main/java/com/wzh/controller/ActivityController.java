@@ -11,6 +11,8 @@ import com.wzh.util.Page;
 import com.wzh.vo.PageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,7 +28,7 @@ import java.util.Map;
  * @Description:
  * @Date: 2020/4/4 23:10
  */
-@RestController
+@Controller
 @Slf4j
 public class ActivityController {
     @Autowired
@@ -36,6 +38,7 @@ public class ActivityController {
 
     //添加市场活动信息
     @PostMapping("/addAct")
+    @ResponseBody
     public Result addAct(Activity activity, HttpServletRequest request) throws BusinessException {
         log.info(activity.toString());
         User u = (User) request.getSession().getAttribute("user");
@@ -46,6 +49,7 @@ public class ActivityController {
 
     //根据市场活动id查找市场活动信息
     @RequestMapping("/selectListByAid")
+    @ResponseBody
     public Result selectListById(String aid) {
         log.info("选择要修改的市场活动的信息Id:" + aid);
         List<Activity> actList = activityService.actList(aid);
@@ -53,7 +57,7 @@ public class ActivityController {
     }
 
     @RequestMapping("/actList")
-    public Result actListCon(Activity activity, @RequestParam(value = "pageNo", defaultValue = "1") String pageNo, @RequestParam(value = "pageSize", defaultValue = "10") String pageSize) {
+    public String actListCon(Activity activity, Model model, @RequestParam(value = "pageNo", defaultValue = "1",required = false) String pageNo, @RequestParam(value = "pageSize", defaultValue = "5",required = false) String pageSize) {
         log.info("接收前端传来的Activity数据:" + activity.toString() + "pageNo:" + pageNo + "\t" + "pageSize:" + pageSize);
         Page page = new Page();
         //设置当前页码
@@ -72,11 +76,13 @@ public class ActivityController {
         map.put("startTime", activity.getStartDate());
         map.put("endTime", activity.getEndDate());
         PageVo pageVom = activityService.getPageMesVo(map, page.getCurrent(), page.getLimit());
-        return Result.ok(pageVom);
+        model.addAttribute("actData", pageVom);
+        return "workbench/activity/index";
     }
 
     //修改市场活动信息
     @PostMapping("/updateAct")
+    @ResponseBody
     public Result updateActMes(Activity activity, HttpServletRequest request) throws BusinessException {
         log.info("wzh修改后的市场活动信息:" + activity);
         User u = (User) request.getSession().getAttribute("user");
@@ -89,6 +95,7 @@ public class ActivityController {
 
     //批量删除市场活动
     @PostMapping("/delAct")
+    @ResponseBody
     public Result delActMes(HttpServletRequest request) {
         String[] delIds = request.getParameterValues("id");
         activityRemarkService.delByRemarkId(delIds);
@@ -98,6 +105,7 @@ public class ActivityController {
 
     //点击市场活动列表名称进入修改界面:
     @RequestMapping("/editActindex")
+    @ResponseBody
     public ModelAndView activity2(String id) {
         log.info("点击市场活动列表名称进入修改界面:" + id);
         List<Activity> editList = activityService.actList(id);
@@ -110,6 +118,7 @@ public class ActivityController {
 
     //备注列表
     @RequestMapping("/actRemarkList")
+    @ResponseBody
     public Result actRemarkCon(String actId) {
         log.info("备注列表根据外键:" + actId);
         List<ActivityRemark> activityRemarkList = activityRemarkService.actRList(actId);
@@ -118,6 +127,7 @@ public class ActivityController {
 
     //查询备注列表
     @RequestMapping("/selRemarkList")
+    @ResponseBody
     public Result selRemarkByIdCon(String remarkId) {
         log.info("备注列表根据Id:" + remarkId);
         ActivityRemark a = activityRemarkService.getRemarkListById(remarkId);
@@ -126,6 +136,7 @@ public class ActivityController {
 
     //修改备注
     @RequestMapping("/updateRemark")
+    @ResponseBody
     public Result updateRemarkByIdCon(ActivityRemark activityRemark, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         User u = (User) request.getSession().getAttribute("user");
@@ -141,6 +152,7 @@ public class ActivityController {
 
     //新增备注
     @PostMapping("/addRemark")
+    @ResponseBody
     public Result addRemarkCon(ActivityRemark activityRemark, HttpServletRequest request) {
         User u = (User) request.getSession().getAttribute("user");
         activityRemark.setCreateBy(u.getCreateBy());
@@ -150,6 +162,7 @@ public class ActivityController {
 
     //删除备注
     @RequestMapping("/delRemark")
+    @ResponseBody
     public Result actRemarkDelById(String remarkId) {
         activityRemarkService.delActRdById(remarkId);
         return Result.ok();
