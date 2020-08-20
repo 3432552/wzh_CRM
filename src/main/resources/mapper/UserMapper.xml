@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzh.dao.UserMapper">
+    <resultMap id="user" type="com.wzh.domain.User">
+        <id property="id" column="id"/>
+        <result property="userName" column="username"/>
+        <result property="loginAct" column="loginact"/>
+        <result property="loginPwd" column="loginpwd"/>
+        <result property="email" column="email"/>
+        <result property="expireTime" column="expiretime"/>
+        <result property="lockState" column="lockstate"/>
+        <result property="deptNum" column="deptnum"/>
+        <result property="allowIps" column="allowip"/>
+        <result property="createTime" column="createtime"/>
+        <result property="createBy" column="createby"/>
+        <result property="editTime" column="edittime"/>
+        <result property="editBy" column="editby"/>
+    </resultMap>
+    <select id="userList" resultType="com.wzh.domain.User" resultMap="user">
+        select * from w_user
+    </select>
+    <select id="login" resultType="com.wzh.domain.User" resultMap="user">
+        select * from w_user
+        where loginact=#{loginAct} and loginpwd=#{loginPwd}
+    </select>
+    <select id="selUserById" resultType="com.wzh.domain.User" parameterType="string">
+        select * from w_user
+        where id=#{id}
+    </select>
+    <update id="updatePwdById" parameterType="string">
+       update w_user
+       set loginpwd=#{newPwd}
+       where id=#{id}
+    </update>
+</mapper>

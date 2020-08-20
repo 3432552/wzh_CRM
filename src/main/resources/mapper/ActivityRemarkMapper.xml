@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzh.dao.ActivityRemarkMapper">
+    <select id="activityRemarkId" resultType="int">
+        select COUNT(*) from w_activity_remark
+        where activityId in
+        <foreach collection="array" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </select>
+    <select id="selectRemarkById" resultType="com.wzh.domain.ActivityRemark" parameterType="string">
+        select * from w_activity_remark
+        where id=#{id}
+        order by createTime desc
+    </select>
+    <select id="actRemarkList" resultType="com.wzh.domain.ActivityRemark">
+        SELECT * FROM w_activity_remark ar
+        WHERE ar.activityId=#{actId}
+        order by createTime desc
+    </select>
+    <update id="updateRemark" parameterType="com.wzh.domain.ActivityRemark">
+        update w_activity_remark
+        set noteContent=#{noteContent},
+        editTime=#{editTime},
+        editBy=#{editBy}
+        where id=#{id}
+    </update>
+    <delete id="delActivityRemarkById" parameterType="string">
+        delete from w_activity_remark
+        where activityId in
+        <foreach collection="array" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </delete>
+    <delete id="delActRemarkById" parameterType="string">
+        delete from w_activity_remark
+        where id=#{id}
+    </delete>
+    <insert id="insertRemark" parameterType="com.wzh.domain.ActivityRemark" keyProperty="id">
+        insert into w_activity_remark
+        (
+        noteContent,
+        createTime,
+        createBy,
+        editTime,
+        editBy,
+        editFlag,
+        activityId
+        )
+        values (
+        #{noteContent},
+        #{createTime},
+        #{createBy},
+        #{editTime},
+        #{editBy},
+        #{editFlag},
+        #{activityId}
+        )
+    </insert>
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzh.dao.ActivityMapper">
+
+    <select id="totalNum" resultType="int">
+        select count(*)
+        from w_activity act
+        inner join w_user u
+        on act.owner=u.id
+        <where>
+            <if test="name!=null and name!=''">
+                act.name like '%' #{name} '%'
+            </if>
+            <if test="owner!=null and owner!=''">
+                and u.username like '%' #{owner} '%'
+            </if>
+            <if test="type!=null and type!=''">
+                and act.type=#{type}
+            </if>
+            <if test="tate!=null and state!=''">
+                and act.state=#{state}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                and act.startDate &gt; #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and act.endDate &lt; #{endTime}
+            </if>
+        </where>
+    </select>
+    <select id="updateSelActivityById" parameterType="string" resultType="com.wzh.domain.Activity">
+        select
+        act.id,u.username as owner,act.name,act.startDate,act.endDate,act.type,act.state,
+        act.budgetcost,act.actualcost,act.description,act.createTime,act.editBy,act.createBy,
+        act.editTime
+        from w_activity act
+        inner join w_user u
+        on act.owner=u.id
+       where act.id=#{aid}
+    </select>
+
+    <update id="updateActDao" parameterType="com.wzh.domain.Activity">
+      update w_activity
+      set name=#{name},
+      startDate=#{startDate},
+      endDate=#{endDate},
+      description=#{description},
+      budgetcost=#{budgetcost},
+      actualcost=#{actualcost},
+      editBy=#{editBy}
+      where
+      id=#{id}
+    </update>
+    <select id="activityListByCondition" resultType="com.wzh.domain.Activity">
+        select
+        act.id,u.username as owner,act.name,act.startDate,act.endDate,act.type,act.state,
+        act.budgetcost,act.actualcost,act.description,act.createTime,act.editBy,act.createBy,
+        act.editTime
+        from w_activity act
+        inner join w_user u
+        on act.owner=u.id
+        <where>
+            <if test="name!=null and name!=''">
+                act.name like '%' #{name} '%'
+            </if>
+            <if test="owner!=null and owner!=''">
+                and u.username like '%' #{owner} '%'
+            </if>
+            <if test="type!=null and type!=''">
+                and act.type= #{type}
+            </if>
+            <if test="state!=null and state!=''">
+                and act.state= #{state}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                and act.startDate &gt; #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and act.endDate &lt; #{endTime}
+            </if>
+        </where>
+        limit #{pageNo},#{pageSize}
+    </select>
+    <insert id="addAct" parameterType="com.wzh.domain.Activity" keyProperty="id">
+     insert into w_activity(
+        owner,
+        name,
+        startDate,
+        endDate,
+        type,
+        state,
+        budgetcost,
+        actualcost,
+        description,
+        createTime,
+        createBy
+        )
+        values(
+        #{owner},
+        #{name},
+        #{startDate},
+        #{endDate},
+        #{type},
+        #{state},
+        #{budgetcost},
+        #{actualcost},
+        #{description},
+        #{createTime},
+        #{createBy}
+        )
+    </insert>
+    <delete id="delActById" parameterType="string">
+        delete from w_activity
+        where id in
+        <foreach collection="array" item="ids" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </delete>
+</mapper>
