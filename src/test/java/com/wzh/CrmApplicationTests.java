@@ -59,4 +59,8 @@ class CrmApplicationTests {
         System.out.println("加盐密码:" + saltPwd);
         System.out.println("校验是否成功:" + MD5Utils.verify("123456", saltPwd));
     }
+    @Test
+    void contentLoads8(){
+        System.out.println("测试上传git是否成功");
+    }
 }
